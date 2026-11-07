@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>911 GT3 RS – strona fanowska</title>
+  <meta name="description" content="Interaktywna, fanowska strona o Porsche 911 GT3 RS: symulator przyspieszenia, aerodynamika, studio lakieru, generacje i tuning.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- NAGŁÓWEK -->
+  <header class="header" id="header">
+    <button class="header__menu" id="menuOpen" type="button" aria-controls="menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <span>Menu</span>
+    </button>
+    <a href="#top" class="header__brand">GT3&nbsp;RS</a>
+    <a href="#tuning" class="header__link">Tuning</a>
+  </header>
+
+  <!-- MENU -->
+  <div class="menu" id="menu" aria-hidden="true">
+    <div class="menu__panel">
+      <button class="menu__close" id="menuClose" type="button" aria-label="Zamknij menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+      <nav class="menu__nav" aria-label="Menu główne">
+        <a href="#dane">Najważniejsze dane</a>
+        <a href="#detale">Detale z bliska</a>
+        <a href="#silnik">Symulator przyspieszenia</a>
+        <a href="#aero">Aerodynamika</a>
+        <a href="#lakier">Studio lakieru</a>
+        <a href="#generacje">Generacje</a>
+        <a href="#tuning">Tuning</a>
+        <a href="#galeria">Galeria</a>
+      </nav>
+    </div>
+    <div class="menu__backdrop" id="menuBackdrop"></div>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero__media" id="heroMedia">
+        <img class="hero__img" src="https://commons.wikimedia.org/wiki/Special:FilePath/2024_Porsche_911_GT3_RS_Weissach_BS_O24.jpg?width=2400" alt="Niebieskie Porsche 911 GT3 RS z pakietem Weissach" fetchpriority="high">
+      </div>
+      <div class="hero__shade"></div>
+      <div class="hero__content">
+        <h1 class="hero__title">911 GT3 RS.</h1>
+        <p class="hero__sub">Stworzony dla toru. Dopuszczony do ruchu.</p>
+        <div class="hero__cta">
+          <a href="#silnik" class="btn btn--glass">Odpal silnik</a>
+          <a href="#tuning" class="btn btn--glass btn--ghost">Zobacz tuning</a>
+        </div>
+      </div>
+      <a href="#dane" class="hero__down" aria-label="Przewiń w dół">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+      </a>
+    </section>
+
+    <!-- DANE -->
+    <section class="section" id="dane">
+      <div class="wrap">
+        <h2 class="h2">Najważniejsze dane</h2>
+        <div class="figures">
+          <div class="figure"><p class="figure__value"><span data-count="386">0</span>&nbsp;kW / <span data-count="525">0</span>&nbsp;KM</p><p class="figure__label">Moc maksymalna</p></div>
+          <div class="figure"><p class="figure__value"><span data-count="3.2" data-decimals="1">0</span>&nbsp;s</p><p class="figure__label">Przyspieszenie 0–100 km/h</p></div>
+          <div class="figure"><p class="figure__value"><span data-count="296">0</span>&nbsp;km/h</p><p class="figure__label">Prędkość maksymalna</p></div>
+          <div class="figure"><p class="figure__value"><span data-count="860">0</span>&nbsp;kg</p><p class="figure__label">Docisk przy 285 km/h</p></div>
+        </div>
+        <p class="note">Dane dotyczą generacji 992 (od 2022 r.) i mogą różnić się w zależności od rynku.</p>
+      </div>
+    </section>
+
+    <!-- DETALE: HOTSPOTY + LUPA -->
+    <section class="section section--grey" id="detale">
+      <div class="wrap">
+        <div class="row-head">
+          <div>
+            <h2 class="h2">Detale z bliska</h2>
+            <p class="lead">Kliknij punkty na zdjęciu. Włącz lupę i najedź na auto, żeby zobaczyć szczegóły.</p>
+          </div>
+          <div class="lens-controls">
+            <label class="switch">
+              <input type="checkbox" id="lensToggle">
+              <span class="switch__track"><span class="switch__thumb"></span></span>
+              <span>Lupa</span>
+            </label>
+            <label class="range range--compact">
+              <span>Powiększenie <output id="lensZoomOut">2,5×</output></span>
+              <input type="range" id="lensZoom" min="1.5" max="5" step="0.1" value="2.5">
+            </label>
+          </div>
+        </div>
+
+        <div class="hotspots" id="hotspots">
+          <div class="hotspots__stage" id="lensStage">
+            <img id="lensImg" src="https://commons.wikimedia.org/wiki/Special:FilePath/2023_Porsche_911_GT3_RS_4.jpg?width=1800" data-large="https://commons.wikimedia.org/wiki/Special:FilePath/2023_Porsche_911_GT3_RS_4.jpg?width=3600" alt="Biały 911 GT3 RS z czerwonymi felgami, widok z tyłu pod kątem" loading="lazy">
+            <div class="lens" id="lens" aria-hidden="true"></div>
+            <button type="button" class="dot" style="left:60%;top:17%" data-spot="0" aria-label="Tylne skrzydło"></button>
+            <button type="button" class="dot" style="left:60%;top:36%" data-spot="1" aria-label="Pokrywa silnika"></button>
+            <button type="button" class="dot" style="left:55%;top:49%" data-spot="2" aria-label="Lampy tylne"></button>
+            <button type="button" class="dot" style="left:73%;top:80%" data-spot="3" aria-label="Dyfuzor i wydech"></button>
+            <button type="button" class="dot" style="left:32%;top:71%" data-spot="4" aria-label="Koło z centralną nakrętką"></button>
+          </div>
+          <aside class="hotspots__info" aria-live="polite">
+            <p class="kicker" id="spotKicker">Detal 1 z 5</p>
+            <h3 id="spotTitle"></h3>
+            <p id="spotText"></p>
+            <div class="hotspots__nav">
+              <button type="button" class="round round--light" id="spotPrev" aria-label="Poprzedni detal"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+              <button type="button" class="round round--light" id="spotNext" aria-label="Następny detal"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYMULATOR -->
+    <section class="section section--dark" id="silnik">
+      <div class="wrap">
+        <p class="kicker kicker--light">Silnik · 4,0 l · wolnossący bokser</p>
+        <h2 class="h2">Do 9000 obr./min. Wciśnij gaz.</h2>
+        <p class="lead">Przytrzymaj przycisk (albo spację), żeby przyspieszać. Skrzynia PDK sama zmienia biegi. Suwakami zmienisz moc i masę – jak w tuningu.</p>
+
+        <div class="sim">
+          <div class="sim__dash">
+            <div class="tacho">
+              <svg viewBox="0 0 300 300" class="tacho__svg" aria-hidden="true">
+                <g id="tachoTicks"></g>
+                <path class="tacho__red" id="tachoRed"/>
+                <line x1="150" y1="150" x2="150" y2="40" class="tacho__needle" id="tachoNeedle"/>
+                <circle cx="150" cy="150" r="9" class="tacho__pin"/>
+              </svg>
+              <div class="tacho__center">
+                <span class="tacho__gear" id="gear">N</span>
+                <span class="tacho__rpm"><span id="rpm">0</span> obr./min</span>
+              </div>
+              <div class="shift-lights" id="shiftLights" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <div class="sim__readouts">
+              <div class="readout readout--big"><span id="speed">0</span><small>km/h</small></div>
+              <div class="readout"><small>0–100 km/h</small><span id="t100">–</span></div>
+              <div class="readout"><small>0–200 km/h</small><span id="t200">–</span></div>
+              <div class="readout"><small>Najlepszy 0–100</small><span id="best100">–</span></div>
+            </div>
+          </div>
+
+          <div class="sim__controls">
+            <button type="button" class="throttle" id="throttle" aria-describedby="throttleHint">
+              <span>Przytrzymaj gaz</span>
+            </button>
+            <p class="hint" id="throttleHint">Puść, aby zwolnić. Spacja też działa, gdy symulator jest na ekranie.</p>
+
+            <label class="range">
+              <span>Moc <output id="powerOut">525 KM</output></span>
+              <input type="range" id="power" min="300" max="900" step="5" value="525">
+            </label>
+            <label class="range">
+              <span>Masa <output id="massOut">1450 kg</output></span>
+              <input type="range" id="mass" min="1150" max="1800" step="10" value="1450">
+            </label>
+            <div class="sim__ratio">
+              <span>Stosunek masy do mocy</span>
+              <strong id="ratio">2,76 kg/KM</strong>
+            </div>
+            <div class="sim__buttons">
+              <button type="button" class="chip" id="presetStock">Seria</button>
+              <button type="button" class="chip" id="presetLight">Odchudzony −100 kg</button>
+              <button type="button" class="chip" id="presetCrazy">Szalony tuning</button>
+              <label class="chip chip--toggle"><input type="checkbox" id="soundToggle" checked> Dźwięk</label>
+            </div>
+            <p class="hint">Wartości z symulatora są poglądowe. Seryjne auto przyspiesza do 100 km/h w 3,2 s.</p>
+          </div>
+          <button type="button" class="throttle throttle--float" aria-hidden="true" tabindex="-1"><span>Przytrzymaj gaz</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AERO -->
+    <section class="section section--grey" id="aero">
+      <div class="wrap">
+        <p class="kicker">Aerodynamika</p>
+        <h2 class="h2">860 kg docisku. Na przycisk.</h2>
+        <p class="lead">Ustaw prędkość suwakiem i przełącz tryb skrzydła. Docisk rośnie z kwadratem prędkości – przy 285 km/h to aż 860 kg.</p>
+
+        <div class="aero">
+          <div class="aero__stage">
+            <svg viewBox="0 0 400 230" class="wingx" role="img" aria-label="Przekrój tylnego skrzydła">
+              <defs>
+                <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 Z" fill="#9a9ca1"/>
+                </marker>
+                <marker id="arrRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                  <path d="M0 0 L10 5 L0 10 Z" fill="#d5001c"/>
+                </marker>
+              </defs>
+              <g class="wingx__flow" id="flow">
+                <path d="M10 70 C120 70 200 60 390 50" marker-end="url(#arr)"/>
+                <path d="M10 110 C120 110 200 100 390 95" marker-end="url(#arr)"/>
+                <path d="M10 150 C120 150 220 160 390 175" marker-end="url(#arr)"/>
+              </g>
+              <path d="M120 125 C160 110 230 108 270 118 C230 128 170 132 120 125 Z" class="wingx__main"/>
+              <g id="flap" class="wingx__flap"><path d="M262 108 C285 96 305 86 320 80 C312 92 292 104 270 116 Z"/></g>
+              <line id="force" x1="200" y1="140" x2="200" y2="220" class="wingx__force" marker-end="url(#arrRed)"/>
+            </svg>
+          </div>
+          <div class="aero__panel">
+            <label class="range">
+              <span>Prędkość <output id="speedAeroOut">200 km/h</output></span>
+              <input type="range" id="speedAero" min="0" max="296" step="1" value="200">
+            </label>
+            <div class="segmented" role="group" aria-label="Tryb skrzydła">
+              <button type="button" class="is-active" data-mode="normal">Docisk</button>
+              <button type="button" data-mode="drs">DRS</button>
+              <button type="button" data-mode="brake">Airbrake</button>
+            </div>
+            <div class="aero__numbers">
+              <div><small>Docisk</small><strong><span id="downforce">0</span> kg</strong></div>
+              <div><small>Opór powietrza</small><strong id="drag">–</strong></div>
+            </div>
+            <div class="meter" aria-hidden="true"><div class="meter__fill" id="downforceBar"></div></div>
+            <p class="aero__caption" id="aeroCaption"></p>
+            <p class="hint">Docisk dla trybu „Docisk” wyliczony z danych fabrycznych; DRS i Airbrake – wartości poglądowe.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDIO LAKIERU -->
+    <section class="section" id="lakier">
+      <div class="wrap">
+        <h2 class="h2">Studio lakieru</h2>
+        <p class="lead">Pobaw się suwakami odcienia, nasycenia i jasności albo wybierz gotowy kolor.</p>
+        <div class="paint">
+          <div class="paint__stage">
+            <img id="paintImg" src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_911_GT3_RS_MR.jpg?width=1800" alt="911 GT3 RS w kolorze zielonym" loading="lazy">
+            <span class="paint__badge" id="paintName">Python Green</span>
+          </div>
+          <div class="paint__panel">
+            <div class="swatches" id="swatches"></div>
+            <label class="range">
+              <span>Odcień <output id="hueOut">0°</output></span>
+              <input type="range" id="hue" min="-180" max="180" step="1" value="0" class="range--hue">
+            </label>
+            <label class="range">
+              <span>Nasycenie <output id="satOut">100%</output></span>
+              <input type="range" id="sat" min="0" max="200" step="1" value="100">
+            </label>
+            <label class="range">
+              <span>Jasność <output id="briOut">100%</output></span>
+              <input type="range" id="bri" min="40" max="140" step="1" value="100">
+            </label>
+            <button type="button" class="chip" id="paintReset">Resetuj</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEISSACH -->
+    <section class="banner" id="weissach">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2024_Porsche_911_992_GT3_RS_Weissach.jpg?width=2400" alt="911 GT3 RS z pakietem Weissach" loading="lazy" class="parallax">
+      <div class="banner__shade"></div>
+      <div class="banner__content">
+        <p class="kicker kicker--light">Pakiet Weissach</p>
+        <h2 class="h2">Każdy gram się liczy.</h2>
+        <p>Karbonowa pokrywa przedniego bagażnika, dach i lusterka, kute felgi z magnezu, karbonowa klatka bezpieczeństwa i łopatki zmiany biegów inspirowane motorsportem.</p>
+        <div class="banner__figures">
+          <div><strong>Nürburgring</strong><span>6:49,328 min</span></div>
+          <div><strong>Kierowca</strong><span>Jörg Bergmeister, 2022</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GENERACJE -->
+    <section class="section section--dark" id="generacje">
+      <div class="wrap">
+        <div class="row-head">
+          <div>
+            <h2 class="h2">Generacje GT3 RS</h2>
+            <p class="lead">Przesuń suwak osi czasu albo kliknij słupek na wykresie mocy.</p>
+          </div>
+          <button type="button" class="round" id="genPlay" aria-label="Odtwarzaj automatycznie">
+            <svg viewBox="0 0 24 24" id="genPlayIcon"><path d="M8 5l11 7-11 7z"/></svg>
+          </button>
+        </div>
+
+        <div class="gens">
+          <div class="gens__stage" id="genStage">
+            <img id="genImgA" alt="" data-zoomable>
+            <img id="genImgB" alt="" data-zoomable>
+            <span class="gens__year" id="genYear"></span>
+          </div>
+          <div class="gens__info">
+            <p class="gens__name" id="genName"></p>
+            <div class="tags" id="genTags"></div>
+            <p class="gens__text" id="genText"></p>
+            <div class="bars" id="genBars" role="group" aria-label="Moc kolejnych generacji"></div>
+          </div>
+        </div>
+
+        <div class="timeline-range">
+          <input type="range" id="genRange" min="0" max="6" step="1" value="6" aria-label="Wybierz generację">
+          <div class="timeline-range__labels" id="genLabels"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TUNING -->
+    <section class="section" id="tuning">
+      <div class="wrap">
+        <p class="kicker">Tuning</p>
+        <h2 class="h2">Seria kontra Manthey.</h2>
+        <p class="lead">Przeciągnij suwak, żeby porównać seryjne 992 GT3 RS z autem z pakietem Manthey: inne felgi, karbonowe elementy i jeszcze więcej docisku. Poniżej – najbardziej szalone 911 z wolnych zdjęć.</p>
+
+        <div class="compare" id="compare" style="--pos:50%">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_992_GT3_RS_Manthey-Kit_MYLE_Festival_2025_DSC_9545.jpg?width=2000" alt="992 GT3 RS z pakietem Manthey" class="compare__img" loading="lazy">
+          <div class="compare__top">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2024_911_GT3_RS_(53536704621).jpg?width=2000" alt="Seryjne czerwone 992 GT3 RS" class="compare__img" loading="lazy">
+          </div>
+          <span class="compare__label compare__label--l">Seria</span>
+          <span class="compare__label compare__label--r">Manthey Kit</span>
+          <div class="compare__handle" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
+          <input type="range" class="compare__range" id="compareRange" min="0" max="100" value="50" step="0.5" aria-label="Porównanie: seria i Manthey">
+        </div>
+
+        <div class="tuners">
+          <button type="button" class="tuner" data-filter="manthey">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2019_Porsche_911_GT3_RS_MR_1.jpg?width=900" alt="" loading="lazy">
+            <span class="tuner__body"><strong>Manthey Racing</strong><small>Tor przede wszystkim</small></span>
+          </button>
+          <button type="button" class="tuner" data-filter="rwb">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/RWB_Furusato,_EMS_2023,_Essen_(P1160902).jpg?width=900" alt="" loading="lazy">
+            <span class="tuner__body"><strong>RAUH-Welt Begriff</strong><small>Ekstremalne poszerzenia</small></span>
+          </button>
+          <button type="button" class="tuner" data-filter="inne">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_Gemballa_Avalanche_GTR600_(53300685218).jpg?width=900" alt="" loading="lazy">
+            <span class="tuner__body"><strong>Gemballa, TechArt i inni</strong><small>Moc i styl</small></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="section section--grey" id="galeria">
+      <div class="wrap">
+        <div class="row-head">
+          <h2 class="h2">Galeria</h2>
+          <p class="hint hint--dark">Kliknij zdjęcie: kółko myszy lub suwak powiększa, przeciągnij, by przesunąć.</p>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Filtr galerii">
+          <button type="button" class="chip is-active" data-filter="all">Wszystkie</button>
+          <button type="button" class="chip" data-filter="seria">GT3 RS seryjne</button>
+          <button type="button" class="chip" data-filter="manthey">Manthey</button>
+          <button type="button" class="chip" data-filter="rwb">RWB</button>
+          <button type="button" class="chip" data-filter="inne">Inny tuning</button>
+        </div>
+        <div class="gallery" id="gallery">
+          <button type="button" class="gallery__item gallery__item--wide" data-cat="seria" data-caption="992 GT3 RS – seria"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2024_911_GT3_RS_(53536704621).jpg?width=1400" alt="Czerwone 911 GT3 RS na wystawie" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="seria" data-caption="992 GT3 RS w kolorze Python Green"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2022_Porsche_911_(992)_GT3_RS.jpg?width=1000" alt="Zielone 911 GT3 RS" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="manthey" data-caption="992 GT3 RS z pakietem Manthey"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_992_GT3_RS_Manthey-Kit_MYLE_Festival_2025_DSC_9545.jpg?width=1000" alt="Czerwone 992 GT3 RS z pakietem Manthey" loading="lazy"></button>
+          <button type="button" class="gallery__item gallery__item--tall" data-cat="rwb" data-caption="RWB „Furusato” – fioletowy szeroki 911"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/RWB_Furusato,_EMS_2023,_Essen_(P1160902).jpg?width=1000" alt="Fioletowy Porsche RWB z ogromnymi poszerzeniami" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="manthey" data-caption="991.2 GT3 RS MR (Manthey Racing)"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2018_Porsche_911_GT3_RS_MR.jpg?width=1000" alt="Zielone 991.2 GT3 RS MR z tyłu" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="seria" data-caption="992 GT3 RS w wyścigowym malowaniu"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2023_Porsche_911_GT3_RS_10.jpg?width=1000" alt="Żółto-zielone 911 GT3 RS" loading="lazy"></button>
+          <button type="button" class="gallery__item gallery__item--wide" data-cat="rwb" data-caption="RWB 964 – biały, z ogromnym skrzydłem"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_964_RWB_Hoonigan.jpg?width=1400" alt="Biały Porsche 964 RWB" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="manthey" data-caption="991.2 GT3 RS MR – niebieski"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2019_Porsche_911_GT3_RS_MR_1.jpg?width=1000" alt="Niebieskie 991.2 GT3 RS MR" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="inne" data-caption="Gemballa Avalanche GTR600"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_Gemballa_Avalanche_GTR600_(53300685218).jpg?width=1000" alt="Porsche Gemballa Avalanche GTR600 z tyłu" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="rwb" data-caption="RWB na bazie 997"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rauh-Welt_Begriff_(RWB)_modified_Porsche_911_(997-series).jpg?width=1000" alt="Bordowy Porsche 997 RWB" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="manthey" data-caption="911 GT2 RS z Manthey Performance Kit"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_911_GT2_RS_Manthey_Racing_Performance_Kit.jpg?width=1000" alt="Czarne 911 GT2 RS z pakietem Manthey" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="rwb" data-caption="RWB 964 w wyścigowym malowaniu"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_964_Rauh-Welt_Begriff_(55194346737).jpg?width=1000" alt="Czerwony Porsche 964 RWB w wyścigowym malowaniu" loading="lazy"></button>
+          <button type="button" class="gallery__item gallery__item--wide" data-cat="inne" data-caption="TechArt CT3 na bazie 993"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Porsche_911_Carrera_4S_TechArt_CT3_(993,_1995)_(54872118476).jpg?width=1400" alt="Żółty Porsche 993 TechArt CT3" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="rwb" data-caption="RWB 993 – Osaka Auto Messe"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/OSAKA_AUTO_MESSE_2015_(266)_-_Porsche_993_tuned_by_RAUH-Welt.jpg?width=1000" alt="Zielony Porsche 993 RWB" loading="lazy"></button>
+          <button type="button" class="gallery__item" data-cat="inne" data-caption="993 Widebody"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/1994_Porsche_911_993_Carrera_Auto_Widebody.jpg?width=1000" alt="Szary Porsche 993 widebody" loading="lazy"></button>
+          <button type="button" class="gallery__item gallery__item--wide" data-cat="seria" data-caption="992 GT3 RS z pakietem Weissach"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/2023_Porsche_911_GT3_RS_Weissach_Package.jpg?width=1400" alt="911 GT3 RS z pakietem Weissach z tyłu" loading="lazy"></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Powiększone zdjęcie">
+    <div class="lightbox__viewport" id="lbViewport">
+      <img id="lbImg" alt="" draggable="false">
+    </div>
+    <button class="lightbox__btn lightbox__close" id="lbClose" type="button" aria-label="Zamknij"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <button class="lightbox__btn lightbox__prev" id="lbPrev" type="button" aria-label="Poprzednie"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="lightbox__btn lightbox__next" id="lbNext" type="button" aria-label="Następne"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    <div class="lightbox__bar">
+      <span class="lightbox__caption" id="lbCaption"></span>
+      <label class="lightbox__zoom">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8 11h6"/></svg>
+        <input type="range" id="lbZoom" min="1" max="5" step="0.05" value="1" aria-label="Powiększenie">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8 11h6M11 8v6"/></svg>
+        <output id="lbZoomOut">100%</output>
+      </label>
+      <span class="lightbox__count" id="lbCount"></span>
+    </div>
+  </div>
+
+  <!-- STOPKA -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <span class="footer__brand">GT3&nbsp;RS</span>
+        <nav class="footer__nav" aria-label="Stopka">
+          <a href="#detale">Detale</a>
+          <a href="#silnik">Symulator</a>
+          <a href="#aero">Aerodynamika</a>
+          <a href="#lakier">Lakier</a>
+          <a href="#generacje">Generacje</a>
+          <a href="#tuning">Tuning</a>
+          <a href="#galeria">Galeria</a>
+        </nav>
+      </div>
+      <p class="footer__note">Nieoficjalna strona fanowska. Nie jest powiązana z Dr. Ing. h.c. F. Porsche AG ani z firmami tuningowymi. „Porsche” i „911” są znakami towarowymi ich właściciela.</p>
+      <details class="credits">
+        <summary>Źródła zdjęć (Wikimedia Commons)</summary>
+        <ul>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2024_Porsche_911_GT3_RS_Weissach_BS_O24.jpg">Zdjęcie główne</a> – MrWalkr, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2023_Porsche_911_GT3_RS_4.jpg">Detale z bliska</a> – Calreyn88, CC BY 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_911_GT3_RS_MR.jpg">Studio lakieru</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2024_Porsche_911_992_GT3_RS_Weissach.jpg">Pakiet Weissach</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_911_GT3_RS_(996)_2003_white-blue.jpg">996 GT3 RS</a> – stephenhanafin, CC BY-SA 2.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_997_GT3_RS_(2006)_IMG_2546.jpg">997 GT3 RS</a> – Alexander-93, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2010_Black_and_Red_Porsche_997_GT3_RS_(IAA_2009).jpg">997.2 GT3 RS</a> – slayer from Hsin Chu, Taiwan, CC BY 2.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2011_Porsche_911_GT3_RS_4.0.jpg">997 GT3 RS 4.0</a> – MrWalkr, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2015_Porsche_911_GT3_RS.jpg">991 GT3 RS</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2019_Porsche_911_GT3_RS_Weissach.jpg">991.2 GT3 RS</a> – MrWalkr, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2024_Porsche_911_GT3_RS_992.jpg">992 GT3 RS</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2024_911_GT3_RS_(53536704621).jpg">Seryjne czerwone 992</a> – Mustang Joe, CC0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_992_GT3_RS_Manthey-Kit_MYLE_Festival_2025_DSC_9545.jpg">992 GT3 RS Manthey Kit</a> – Alexander Migl, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2022_Porsche_911_(992)_GT3_RS.jpg">Zielone 992</a> – Pelicanactor, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2023_Porsche_911_GT3_RS_10.jpg">Żółte 992</a> – Calreyn88, CC0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2023_Porsche_911_GT3_RS_Weissach_Package.jpg">992 Weissach z tyłu</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2018_Porsche_911_GT3_RS_MR.jpg">991.2 GT3 RS MR zielony</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:2019_Porsche_911_GT3_RS_MR_1.jpg">991.2 GT3 RS MR niebieski</a> – Calreyn88, CC BY 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_911_GT2_RS_Manthey_Racing_Performance_Kit.jpg">GT2 RS Manthey</a> – Calreyn88, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:RWB_Furusato,_EMS_2023,_Essen_(P1160902).jpg">RWB Furusato</a> – MB-one, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_964_RWB_Hoonigan.jpg">RWB 964 biały</a> – Farrell Small, CC BY 2.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Rauh-Welt_Begriff_(RWB)_modified_Porsche_911_(997-series).jpg">RWB 997</a> – Oleg Yunakov, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_964_Rauh-Welt_Begriff_(55194346737).jpg">RWB 964 czerwony</a> – Alexandre Prevot, CC BY-SA 4.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:OSAKA_AUTO_MESSE_2015_(266)_-_Porsche_993_tuned_by_RAUH-Welt.jpg">RWB 993 zielony</a> – Tokumeigakarinoaoshima, CC0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_Gemballa_Avalanche_GTR600_(53300685218).jpg">Gemballa Avalanche</a> – Alexandre Prevot, CC BY-SA 2.0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:Porsche_911_Carrera_4S_TechArt_CT3_(993,_1995)_(54872118476).jpg">TechArt CT3</a> – Charles from Port Chester, CC0</li>
+          <li><a href="https://commons.wikimedia.org/wiki/File:1994_Porsche_911_993_Carrera_Auto_Widebody.jpg">993 Widebody</a> – Calreyn88, CC BY-SA 4.0</li>
+        </ul>
+      </details>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
